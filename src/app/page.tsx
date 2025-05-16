@@ -1,59 +1,77 @@
 'use client';
 
+import { useState } from 'react';
 import styles from './page.module.css';
 
+const calcTotalPoint = (arr: number[]) => {
+  let total = 0;
+  for (let i = 0; i < arr.length; i++) {
+    total += arr[i];
+  }
+
+  return total;
+};
+
 export default function Home() {
+  const [samplePoints, setSamplePoints] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+  const [board, setBoard] = useState([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+  console.log(samplePoints);
+  const [sampleCounter, setSampleCounter] = useState(0);
+  console.log(sampleCounter);
+  const Clickhandler = () => {
+    const newSamplePoints = structuredClone(samplePoints);
+    newSamplePoints[sampleCounter] += 1;
+    setSamplePoints(newSamplePoints);
+    setSampleCounter((sampleCounter + 1) % 14);
+  };
+  const totalPoint = calcTotalPoint(samplePoints);
+  console.log(totalPoint);
+
+  //↓↓表示する内容↓↓
   return (
+    //ボタンがクリック→clickHandler関数実行
     <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code} style={{ backgroundColor: '#fafafa' }}>
-            src/app/page.tsx
-          </code>
-        </p>
-
-        <div className={styles.grid}>
-          <a className={styles.card} href="https://nextjs.org/docs">
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a className={styles.card} href="https://nextjs.org/learn">
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a className={styles.card} href="https://github.com/vercel/next.js/tree/master/examples">
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            className={styles.card}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>Instantly deploy your Next.js site to a public URL with Vercel.</p>
-          </a>
+      <button onClick={Clickhandler}>onClick</button>
+      {board.map((row, rowIndex) => (
+        <div key={rowIndex} className={styles.row}>
+          {row.map((cell, colIndex) => (
+            <div
+              key={`${rowIndex}-${colIndex}`}
+              className={styles.cell}
+              onClick={() => {
+                console.log('a');
+              }}
+              style={{ backgroundPosition: `${sampleCounter * -30}px` }}
+            />
+          ))}
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <span className={styles.logo}>
-            <img src="vercel.svg" alt="Vercel Logo" width={72} height={16} />
-          </span>
-        </a>
-      </footer>
+      ))}
     </div>
   );
 }
+
+//再帰関数
+/*if()
+board  の前に
+(arr:             number)
+userinputs[0~4] boardmap[1,0] => board[]tsx
+constcalcboard
+どのマスでユーザーがなにをした
+
+初級～上級＋爆弾の数を決めるとか（カスタム）
+見た目一緒 灰色のやつ（数字以外）
+右上左上、下のバー無視
+ブロックのデザイン=>css
+時間（秒数）useEffect(検索)
+クリックした後に爆弾を置く＝初回で爆発しない
+ */
