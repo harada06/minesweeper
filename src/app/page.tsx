@@ -3,13 +3,13 @@
 import { useState } from 'react';
 import styles from './page.module.css';
 
-const calcTotalPoint = (arr: number[]) => {
+const calcTotalPoint = (arr: number[], counter: number) => {
   let total = 0;
   for (let i = 0; i < arr.length; i++) {
     total += arr[i];
   }
 
-  return total;
+  return total + counter;
 };
 
 export default function Home() {
@@ -41,18 +41,17 @@ export default function Home() {
   return (
     //ボタンがクリック→clickHandler関数実行
     <div className={styles.container}>
-      <button onClick={Clickhandler}>onClick</button>
       {board.map((row, rowIndex) => (
         <div key={rowIndex} className={styles.row}>
           {row.map((cell, colIndex) => (
             <div
               key={`${rowIndex}-${colIndex}`}
               className={styles.cell}
-              onClick={() => {
-                console.log('a');
-              }}
               style={{ backgroundPosition: `${sampleCounter * -30}px` }}
-            />
+            >
+              <button onClick={Clickhandler} className={styles.button} />
+              <div className={styles.coverCell} />
+            </div>
           ))}
         </div>
       ))}
