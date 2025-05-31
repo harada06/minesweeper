@@ -25,14 +25,22 @@ export default function Home() {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+
+  const [coverBoard, setCoverBoard] = useState(
+    Array.from({ length: 9 }, () => Array(9).fill(true)), //true:開 false:閉
+  );
   console.log(samplePoints);
   const [sampleCounter, setSampleCounter] = useState(0);
   console.log(sampleCounter);
-  const Clickhandler = () => {
+
+  const Clickhandler = (rowIndex: number, colIndex: number) => {
     const newSamplePoints = structuredClone(samplePoints);
     newSamplePoints[sampleCounter] += 1;
     setSamplePoints(newSamplePoints);
     setSampleCounter((sampleCounter + 1) % 14);
+    const newCoverBoard = structuredClone(coverBoard);
+    newCoverBoard[rowIndex][colIndex] = false;
+    setCoverBoard(newCoverBoard);
   };
   const totalPoint = calcTotalPoint(samplePoints);
   console.log(totalPoint);
@@ -49,8 +57,14 @@ export default function Home() {
               className={styles.cell}
               style={{ backgroundPosition: `${sampleCounter * -30}px` }}
             >
-              <button onClick={Clickhandler} className={styles.button} />
-              <div className={styles.coverCell} />
+              {coverBoard[rowIndex][colIndex] && (
+                <div className={styles.coverCell}>
+                  <button
+                    onClick={() => Clickhandler(rowIndex, colIndex)}
+                    className={styles.button}
+                  />
+                </div>
+              )}
             </div>
           ))}
         </div>
